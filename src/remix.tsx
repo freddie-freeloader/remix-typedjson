@@ -145,6 +145,16 @@ export function useTypedRouteLoaderData<T = AppData>(
     | undefined
 }
 
+function useTypedLoaderDataMatchPathname<T = AppData>(
+  pathname: string
+): UseDataFunctionReturn<T> | undefined {
+  const match = useMatches().find((match) => match.pathname === pathname);
+  if (!match) return undefined;
+  return deserializeRemix<T>(match.data as RemixSerializedType<T>) as
+    | UseDataFunctionReturn<T>
+    | undefined;
+}
+
 export type RemixSerializedType<T> = {
   $$obj: T | null
   $$meta?: MetaType | null
